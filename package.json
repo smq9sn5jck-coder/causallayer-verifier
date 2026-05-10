@@ -1,0 +1,44 @@
+{
+  "name": "causallayer-verifier",
+  "version": "0.1.0",
+  "description": "Independent, zero-dependency verifier for CausalLayer / Faultkey signed accuracy ledger entries and Merkle anchor records. Audit AI-liability claims without trusting the vendor.",
+  "keywords": [
+    "ai-liability",
+    "ai-safety",
+    "ai-governance",
+    "ai-incident",
+    "merkle-tree",
+    "ed25519",
+    "opentimestamps",
+    "transparency-log",
+    "audit-log",
+    "verifiable-claims"
+  ],
+  "homepage": "https://github.com/smq9sn5jck-coder/causallayer-verifier",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smq9sn5jck-coder/causallayer-verifier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smq9sn5jck-coder/causallayer-verifier/issues"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "lib/index.js",
+  "bin": {
+    "causallayer-verify": "bin/causallayer-verify.js"
+  },
+  "files": [
+    "lib/",
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "dependencies": {}
+}
