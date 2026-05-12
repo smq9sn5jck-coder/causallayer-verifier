@@ -1,0 +1,18 @@
+# Keep the npm tarball minimal — only `lib/`, `bin/`, README, and LICENSE
+# need to ship. Everything else is dev-time only.
+#
+# Note: package.json's `files` field is the authoritative allowlist; this
+# .npmignore exists as a belt-and-braces safety net so CI's `npm pack
+# --dry-run` check can't be fooled by future additions.
+
+.github/
+test/
+STATUS.md
+CHANGELOG.md
+RELEASING.md
+.gitignore
+.npmignore
+*.log
+*.tgz
+node_modules/
+.DS_Store

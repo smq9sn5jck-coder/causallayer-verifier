@@ -1,0 +1,51 @@
+name: CI
+
+# Runs the verifier's smoke tests on every push and pull request across
+# the Node.js versions the package claims to support (>= 18). Keeps the
+# `engines.node` declaration in package.json honest.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test on Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Run smoke tests
+        run: npm test
+
+      - name: Verify zero runtime dependencies
+        run: |
+          DEPS=$(node -p "Object.keys(require('./package.json').dependencies || {}).length")
+          if [ "$DEPS" != "0" ]; then
+            echo "::error::Verifier package must have zero runtime dependencies (found $DEPS)"
+            exit 1
+          fi
+          echo "Confirmed: zero runtime dependencies"
+
+      - name: Verify package contents are clean
+        run: |
+          npm pack --dry-run 2>&1 | tee /tmp/pack.log
+          # Ensure no test files, no .github, no STATUS.md ship in the tarball
+          if grep -E "(test/|\.github/|node_modules/)" /tmp/pack.log; then
+            echo "::error::Unexpected files in publish tarball"
+            exit 1
+          fi
