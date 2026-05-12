@@ -38,7 +38,12 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "prepublishOnly": "npm test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "dependencies": {}
 }

@@ -1,0 +1,65 @@
+name: Release to npm
+
+# Publishes the package to npm whenever a semver tag `vX.Y.Z` is pushed.
+#
+# Prerequisites (one-time setup):
+#   1. Generate an npm automation token at https://www.npmjs.com/settings/<user>/tokens
+#      (type: "Automation" so 2FA is not required for publishes).
+#   2. Add it to repo Settings -> Secrets and variables -> Actions as `NPM_TOKEN`.
+#
+# To cut a release:
+#   git tag v0.1.0
+#   git push origin v0.1.0
+#
+# The package is published with --provenance, which records a cryptographically
+# verifiable build attestation on npm so consumers can confirm the published
+# tarball was built from this exact GitHub commit by this exact workflow.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  publish:
+    name: Publish to npm with provenance
+    runs-on: ubuntu-latest
+
+    # Required for `npm publish --provenance` to mint an OIDC token.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Verify tag matches package.json version
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Tag v$TAG_VERSION does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+          echo "Tag v$TAG_VERSION matches package.json version $PKG_VERSION"
+
+      - name: Run tests
+        run: npm test
+
+      - name: Publish to npm with provenance
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          fail_on_unmatched_files: false
