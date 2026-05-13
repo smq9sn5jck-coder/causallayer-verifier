@@ -4,8 +4,16 @@
 > signed daily accuracy ledgers and Merkle anchor records.
 
 [![npm](https://img.shields.io/npm/v/causallayer-verifier.svg)](https://www.npmjs.com/package/causallayer-verifier)
+[![CI](https://github.com/smq9sn5jck-coder/causallayer-verifier/actions/workflows/ci.yml/badge.svg)](https://github.com/smq9sn5jck-coder/causallayer-verifier/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/badge/tests-40%20passing-brightgreen)](test/)
+[![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](package.json)
+[![provenance](https://img.shields.io/badge/npm-provenance-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](#install)
+
+> **Self-audited.** 4 smoke tests + 36 adversarial vectors covering Merkle tampering,
+> signature forgery, ledger-chain breakage, and canonical-JSON ordering.
+> Run `npm test` to reproduce. The release pipeline blocks publishing if any vector regresses.
 
 Audit any AI-liability accuracy claim CausalLayer makes — without trusting
 the vendor, without an account, without an API key, without a network call
