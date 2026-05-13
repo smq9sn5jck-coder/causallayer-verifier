@@ -27,7 +27,7 @@
   the public append-only Merkle-anchored log against which every
   CausalLayer certificate is verified. Includes the published Ed25519
   public key (fingerprint:
-  `1a2f842089766a686bec10a061b3fc3d4bd07fcdadbfdf8a3aef7761bac8a954`).
+  `5b7fc9b398b162e4900f43bddf55cda93c8c7d0b1749cc86e0cbb5754582d6e6`).
 - [Open RFC issue (post-incident AI-liability attribution integration spec v0.1)](https://github.com/smq9sn5jck-coder/causallayer-anchor-log/issues/4):
   the canonical place to comment on the integration contract.
 

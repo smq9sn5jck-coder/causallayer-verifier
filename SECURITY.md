@@ -79,7 +79,13 @@ The canonical CausalLayer Ed25519 public key is published at:
 - https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/public-key.pem
 
 Fingerprint (SHA-256 of DER-encoded public key):
-`1a2f842089766a686bec10a061b3fc3d4bd07fcdadbfdf8a3aef7761bac8a954`
+`5b7fc9b398b162e4900f43bddf55cda93c8c7d0b1749cc86e0cbb5754582d6e6`
+
+The canonical public key was rotated on 2026-05-14 during the
+pre-genesis operational onboarding of the engine's publication
+pipeline. The contemporaneous post-mortem is at
+https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/KEY-ROTATION-2026-05-14.md.
+No authoritative anchor was ever signed under the prior key.
 
 If you receive a CausalLayer anchor signed by any other key, treat it
 as untrusted and report the discrepancy through the channel above.
