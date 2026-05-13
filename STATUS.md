@@ -48,9 +48,9 @@ The verifier is intentionally designed to be trustable by an adversary. Specific
 1. Read [`bin/verify-anchor.js`](./bin/verify-anchor.js) and [`lib/`](./lib/) yourself.
    The entire codebase is under 200 lines of standard-library Node. If you cannot audit it in
    one sitting, the package is too complex and we have failed.
-2. Fetch the public key from any independent source: the public anchor-log repository, the
-   marketing site's `.well-known` directory, an independent mirror, or directly from a
-   regulator or auditor who has obtained their own copy.
+2. Fetch the public key from any independent source: the
+   [public anchor-log repository](https://github.com/smq9sn5jck-coder/causallayer-anchor-log),
+   an independent mirror, or directly from a regulator or auditor who has obtained their own copy.
 3. Run the verifier locally with `--offline` or simply disconnect from the network. There is
    no network dependency at verification time.
 
