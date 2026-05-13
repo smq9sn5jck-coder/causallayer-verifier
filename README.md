@@ -1,6 +1,7 @@
 # causallayer-verifier
 
-> **Independent, zero-dependency verifier** for [CausalLayer / Faultkey](https://faultkey.ai)
+> **Independent, zero-dependency verifier** for the
+> [CausalLayer](https://github.com/smq9sn5jck-coder/causallayer-anchor-log) AI-liability engine's
 > signed daily accuracy ledgers and Merkle anchor records.
 
 [![npm](https://img.shields.io/npm/v/causallayer-verifier.svg)](https://www.npmjs.com/package/causallayer-verifier)
@@ -134,15 +135,16 @@ post-hoc rewrite of the `causallayer-anchor-log` GitHub history, **and**
 
 ## Public key — where to fetch
 
-The canonical Ed25519 public key is published at:
+The canonical Ed25519 public key is published in the
+[`causallayer-anchor-log`](https://github.com/smq9sn5jck-coder/causallayer-anchor-log) repository:
 
-- <https://faultkey.ai/.well-known/causallayer-cert/public-key.pem> (PEM)
-- <https://faultkey.ai/.well-known/causallayer-cert/public-key.jwk.json> (JWK)
-- <https://faultkey.ai/.well-known/causallayer-cert/fingerprint.txt> (SHA-256 fingerprint)
-- Mirrored in the [`causallayer-anchor-log`](https://github.com/smq9sn5jck-coder/causallayer-anchor-log) repo
+- [`public-key.pem`](https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/public-key.pem) (PEM)
+- [`public-key.jwk.json`](https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/public-key.jwk.json) (JWK)
+- [`fingerprint.txt`](https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/fingerprint.txt) (SHA-256 fingerprint)
 
-If those copies ever disagree, **do not trust either** until you have
-out-of-band confirmation of the correct fingerprint.
+GitHub's commit history makes silent rotation of the fingerprint detectable.
+If in doubt about authenticity, cross-check the fingerprint against
+out-of-band sources (e.g., a CausalLayer team member's signed message).
 
 > **Bootstrap notice (May 2026):** The public key currently shipped is a
 > *development* key. The first authoritative anchor commit will publish the
@@ -154,17 +156,29 @@ out-of-band confirmation of the correct fingerprint.
 ## Reporting integrity issues
 
 If you find a discrepancy between a published anchor and what CausalLayer
-claims publicly, please file a P0 issue on this repo or email
-**security@faultkey.ai**.
+claims publicly, please file a P0 issue on this repo:
+<https://github.com/smq9sn5jck-coder/causallayer-verifier/issues>.
 
 ---
+
+## What is CausalLayer?
+
+**CausalLayer** is a deterministic causal-attribution engine for AI-liability
+incidents. Given a description of an AI failure (a Tesla AutoPilot crash, a
+rogue agent decision, a privacy violation), it produces a structured
+allocation of fault across the parties involved (manufacturer, deployer,
+operator, user), an estimated damages range calibrated against ~44 verified
+settlement cases, and a full auditable causal chain.
+
+This verifier doesn't run the engine — it lets anyone independently confirm
+the engine's *published accuracy claims*. The engine itself is private; the
+receipts are public.
 
 ## Related
 
 - Public anchor log: <https://github.com/smq9sn5jck-coder/causallayer-anchor-log>
-- Public certificate verifier (browser): <https://faultkey.ai/.well-known/causallayer-cert/verify.html>
-- Public anchor verifier (browser): <https://faultkey.ai/.well-known/causallayer-cert/verify-anchor.html>
-- Public accuracy track record: <https://faultkey.ai/track-record>
+- Genesis declaration: <https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/GENESIS.md>
+- Current status (what's verifiable today vs. pending): <https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/STATUS.md>
 
 ## License
 
