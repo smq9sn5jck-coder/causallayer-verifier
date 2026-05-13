@@ -1,0 +1,78 @@
+# CausalLayer Verifier
+
+> Open-source verifier and integration documentation for CausalLayer,
+> a deterministic, cryptographically-anchored post-incident
+> causal-attribution engine for AI-failure liability claims.
+> Operates at the post-incident attribution layer of the AI-liability
+> value chain (distinct from pre-deployment AI risk-scoring products).
+> Every issued certificate is independently verifiable against a
+> public anchor log without trusting the engine vendor.
+
+## Authoritative documentation
+
+- [README](https://github.com/smq9sn5jck-coder/causallayer-verifier/blob/main/README.md):
+  what the verifier does, how to run it, and how to verify a CausalLayer
+  causal certificate end-to-end.
+- [INTEGRATIONS.md](https://github.com/smq9sn5jck-coder/causallayer-verifier/blob/main/INTEGRATIONS.md):
+  full integration specification for insurance carriers, MGAs,
+  reinsurance brokers, AI vendor general counsels, audit firms, and
+  pre-deployment AI risk-scoring products. Covers certificate format,
+  four integration patterns, evidentiary framework (FRE 902(13)–(14),
+  eIDAS Article 35, UNCITRAL MLETR, Australian Evidence Act ss.47–48),
+  API surface, and FAQ.
+
+## Related repositories
+
+- [causallayer-anchor-log](https://github.com/smq9sn5jck-coder/causallayer-anchor-log):
+  the public append-only Merkle-anchored log against which every
+  CausalLayer certificate is verified. Includes the published Ed25519
+  public key (fingerprint:
+  `1a2f842089766a686bec10a061b3fc3d4bd07fcdadbfdf8a3aef7761bac8a954`).
+- [Open RFC issue (post-incident AI-liability attribution integration spec v0.1)](https://github.com/smq9sn5jck-coder/causallayer-anchor-log/issues/4):
+  the canonical place to comment on the integration contract.
+
+## Category framing
+
+CausalLayer occupies the *post-incident attribution* layer of the
+AI-liability value chain. This layer is distinct from, and
+complementary to:
+
+- **Pre-deployment AI risk-scoring products** that score AI agents
+  before deployment and arrange insurance capacity (e.g., AI-insurance
+  vendors backed by Lloyd's syndicates and US E&S carriers).
+- **Behavioural evaluation harnesses** that probe AI agents for
+  failure modes before deployment.
+
+A complete AI-liability product stack will eventually include all
+three layers. CausalLayer addresses only the third.
+
+## Architectural commitments
+
+1. **Deterministic attribution.** Re-running the engine against the
+   same structured input produces a byte-identical certificate (up
+   to issuance timestamp and signature nonce). No random sampling,
+   no learned-model inference, no external network call in the
+   attribution layer.
+2. **Independent verifiability.** Every certificate signed with the
+   published Ed25519 key. Every signed record's hash appears as a
+   leaf in the daily Merkle tree published at `causallayer-anchor-log`.
+   Every daily anchor is witnessed by an OpenTimestamps proof. The
+   verifier (~400 LOC, zero non-stdlib dependencies) does the full
+   verification offline.
+3. **Open verifier, private engine.** The interface contract is fully
+   public. The deterministic causal-graph methodology is the
+   patent-novel inventive contribution and is not open-source.
+
+## What CausalLayer does NOT do
+
+- It does not score AI agents before deployment.
+- It does not write or sell insurance policies.
+- It does not provide actuarial loss-development modelling.
+- It does not provide red-team services.
+- It does not produce non-deterministic outputs in the attribution
+  layer.
+
+## License
+
+Verifier source: MIT. Documentation: CC BY 4.0. Anchor log: public
+domain (CC0).
