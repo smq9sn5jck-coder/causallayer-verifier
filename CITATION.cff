@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "CausalLayer Verifier: Independent verifier for cryptographically-anchored AI-liability attribution records"
+abstract: >-
+  CausalLayer Verifier is a zero-dependency, independent verifier for the
+  CausalLayer post-incident causal-attribution engine for AI failures. It
+  validates Ed25519-signed daily accuracy ledgers and Merkle anchor records
+  against the public CausalLayer anchor log, without requiring any cooperation
+  from the engine vendor. The verifier is designed for use by opposing counsel,
+  internal auditors, regulators, insurers, and journalists who must
+  independently confirm CausalLayer's published accuracy record.
+authors:
+  - family-names: Alford
+    given-names: Jarrod
+    affiliation: CausalLayer
+type: software
+license: MIT
+repository-code: "https://github.com/smq9sn5jck-coder/causallayer-verifier"
+url: "https://github.com/smq9sn5jck-coder/causallayer-verifier"
+keywords:
+  - ai-liability
+  - ai-safety
+  - ai-governance
+  - ai-incident
+  - causal-attribution
+  - merkle-tree
+  - ed25519
+  - opentimestamps
+  - transparency-log
+  - verifiable-claims
+version: "0.1.0"
+date-released: "2026-05-13"
