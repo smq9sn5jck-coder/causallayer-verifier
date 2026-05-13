@@ -60,7 +60,7 @@ function main() {
     console.error(
       `error: public key not found at ${keyPath}\n` +
         "       pass --key explicitly, or fetch from\n" +
-        "       https://faultkey.ai/.well-known/causallayer-cert/public-key.pem"
+        "       https://github.com/smq9sn5jck-coder/causallayer-anchor-log/blob/main/public-key.pem"
     );
     process.exit(2);
   }
