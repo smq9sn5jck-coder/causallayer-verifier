@@ -11,6 +11,19 @@ deprecation notice in the public anchor-log repository.
 
 ## [Unreleased]
 
+### Documented
+
+- `RELEASING.md` already references `.github/workflows/release.yml` for the
+  automated tag-triggered npm publish flow, but the workflow file itself was
+  never committed. Pushing a `vX.Y.Z` tag therefore did nothing. The
+  workflow content is documented in the `feature/release-workflow` PR
+  description for manual addition via the GitHub UI (the bot identity used
+  for repo automation lacks the `workflows` permission needed to commit
+  files under `.github/workflows/`).
+- A companion CI workflow (`ci.yml`) running the unit + 36-vector
+  adversarial suite on Node 18 / 20 / 22 for every push and PR to `main` is
+  also documented in the PR for manual addition.
+
 ## [0.1.0] — Initial public release
 
 ### Added
