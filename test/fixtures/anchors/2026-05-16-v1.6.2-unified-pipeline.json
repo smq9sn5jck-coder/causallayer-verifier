@@ -1,0 +1,161 @@
+{
+  "schema": "causallayer.audit-batch.v1",
+  "title": "CausalLayer v1.6.2 \u2014 UNIFIED MULTI-ENGINE PIPELINE DAY (53 engines \u00d7 280 cases)",
+  "generated_at": "2026-05-15T21:32:33.332633+00:00",
+  "engine_package_version": "3.1.0",
+  "legal_scorer_doctrinal_version": "1.6.2",
+  "corpus_version": "0.9.1",
+  "corpus_path": "/home/ubuntu/calb2/v09/calb2_v091.json",
+  "leaf_count": 5,
+  "leaves": [
+    {
+      "leaf_index": 1,
+      "leaf_type": "unified_run_summary",
+      "title": "v1.6.2 unified pipeline \u2014 run summary (53 engines \u00d7 280 cases)",
+      "artefact_path": "/home/ubuntu/calb2/v09/v162_unified/run_summary.json",
+      "sha256": "bf94504faae16563b7d8da51065261583b1eb225c62f9e0be178e4c0e17b6734",
+      "headline_metrics": {
+        "engine_version_tag": "v1.6.2 (legal scorer) + v3.1.0 (engine package)",
+        "cases_total": 280,
+        "cases_ok": 280,
+        "cases_failed": 0,
+        "total_runtime_ms": 17813,
+        "mean_runtime_ms_per_case": 64,
+        "legal_top1": {
+          "hits": 254,
+          "denom": 276,
+          "pct": 92
+        },
+        "legal_l1_mean": 20.92,
+        "engines_total_slots": 54,
+        "engines_filling_100pct": 45,
+        "engines_filling_partial": 4,
+        "engines_dead_zero_pct": 5
+      }
+    },
+    {
+      "leaf_index": 2,
+      "leaf_type": "scenario_map",
+      "title": "Per-case predictions, ground truth, doctrine, Top-1 / L1",
+      "artefact_path": "/home/ubuntu/calb2/v09/v162_unified/scenario_map.json",
+      "sha256": "3dc1ac6f4cf9bf921766b5677bca893b3eb31af5e62963e00248221affda60e8",
+      "case_count": 280
+    },
+    {
+      "leaf_index": 3,
+      "leaf_type": "coverage_matrix",
+      "title": "Per-case \u00d7 per-engine fill matrix (53 slots \u00d7 280 cases)",
+      "artefact_path": "/home/ubuntu/calb2/v09/v162_unified/coverage_matrix.json",
+      "sha256": "1f93f89a73af4ad8442af0a92294198bbb560aa5024dbf041c338206f12892b6",
+      "engine_slots": [
+        "report",
+        "boundaryGaps",
+        "evidenceChainCompleteness",
+        "precedentAnalysis",
+        "historicalCaseAnalysis",
+        "severityBenchmark",
+        "contributoryNegligence",
+        "foreseeability",
+        "damagesQuantification",
+        "threeLayerLiability",
+        "recoveryPlan",
+        "litigationRisk",
+        "jurisdictionComparison",
+        "deviationTaxonomy",
+        "twoPassResult",
+        "confidenceIntervals",
+        "edgeEnrichment",
+        "jurisdictionDivergence",
+        "llmForeseeabilityRefinement",
+        "noveltyAnalysis",
+        "vicariousLiability",
+        "insuranceUnderwriting",
+        "supplyChain",
+        "financialRanges",
+        "courtAttribution",
+        "counterfactualSimulation",
+        "causalAnalysis",
+        "auditChain",
+        "reproducibilityCertificate",
+        "liabilityModeAnalysis",
+        "precedentPrediction",
+        "regulatoryFiling",
+        "scmIntegration",
+        "multiCausalAnalysis",
+        "judicialCalibration",
+        "infraCalibration",
+        "cyberCalibration",
+        "unifiedButFor",
+        "actuarialPricing",
+        "financialBlastRadius",
+        "calibratedDamages",
+        "outcomeTypeInference",
+        "regressionDamagesEstimate",
+        "ensembleConfidence",
+        "evidenceSufficiency",
+        "hitlBoundary",
+        "deepSupplyChain",
+        "forwardLoss",
+        "jurisdictionArbitrage",
+        "article73Report",
+        "causalCertificate",
+        "regulatorActions",
+        "autoCalibration",
+        "networkEffect"
+      ]
+    },
+    {
+      "leaf_index": 4,
+      "leaf_type": "per_case_bundle_merkle_root",
+      "title": "Bitcoin-style Merkle root over 280 per-case bundle files",
+      "sha256": "ca1f9aa5067623632f5ce9d7498bf411e6ec4c6a6fcd51fed3d856765e57fe53",
+      "sha256_scope": "sha256(canonical-json of {leaf_type, case_count, merkle_algorithm, root, directory})",
+      "merkle_root_of_bundles": "e98ae9af333155deb6fb0b5daf7818d7acb6775e7cfea1bf6c5f9c1e635cb8fd",
+      "case_count": 280,
+      "directory": "/home/ubuntu/calb2/v09/v162_unified/per_case",
+      "sample_inclusion_witnesses": [
+        {
+          "case_id": "L1-001",
+          "sha256": "cda032bf0f27978cf2ab8622bffaff0d04a0e53899832b567738de0aca38dece"
+        },
+        {
+          "case_id": "L2-911",
+          "sha256": "c282cdaa5690d29e1e4e1b1a4d990b7b7c4c5c4bb5ff4df960abc9f150fe561f"
+        },
+        {
+          "case_id": "L9-907",
+          "sha256": "8039bb3011c93498efd55415eb9b0a8b249ce3ab92d4e9b3ebfefa2f1a45ff32"
+        }
+      ]
+    },
+    {
+      "leaf_index": 5,
+      "leaf_type": "engine_code_fingerprint",
+      "title": "legalResponsibilityScorer.ts (v1.6.2) source fingerprint",
+      "artefact_path": "/home/ubuntu/work/causallayer/server/engine/legalResponsibilityScorer.ts",
+      "sha256": "c831be971011262ba9ff0a6a8b8e657e3be6d783a2b7b16f9a6316a6616a2d02",
+      "scope": "Locks the v1.6.2 fix: in-house + sanctioned_role=joint \u2192 deployer (L5-903 Ascend Ecom).",
+      "supporting_artefacts": {
+        "orchestrator": {
+          "path": "/home/ubuntu/work/causallayer/scripts/calb2_v091_unified_run.ts",
+          "sha256": "cb006ee28571d8ded8f1eec5585df72d8fbc74723f40a5f7953bddd1d85cf9d0"
+        },
+        "scope_check_script": {
+          "path": "/tmp/scope_inhouse_joint_fix.py",
+          "sha256": "c4e8cd05c89c00f02bdd021ed569d59dcc1767517caf5d47f222b04f6a530741"
+        }
+      }
+    }
+  ],
+  "merkle_algorithm": "sha256-bitcoin-duplicate-pair",
+  "batch_merkle_root": "892a14040b0fd8e3352130c6554f22c5eb4ff98b731aeca4b72c3400fdca3a68",
+  "status": "pre-genesis-test",
+  "notes": "First end-to-end run of the full 53-engine analyzeIncident() pipeline on all 280 cases of CALB-2 v0.9.1, with the legal-doctrine scorer (scoreLegalResponsibility) wired as the authoritative attribution path. Run completed in 18 seconds on a single core (mean 64 ms/case). Top-1 attribution matches CALB-2 ground-truth liability_allocation on 92.0% of valid cases (254/276); mean L1 = 20.92. 45 of 53 engine slots fire on 100% of cases; 3 fire partially (regulator-/domain-gated); 5 fire 0% (jurisdictionDivergence, llmForeseeabilityRefinement, unifiedButFor, regressionDamagesEstimate, article73Report \u2014 these are domain- or budget-gated and require either richer corpus signals or an LLM-call budget that this batch run did not enable). Reported transparently rather than hidden.",
+  "batch_body_sha256": "ad86626a77e2dcdda80fc024fedbeceeb2d63b5fad0033550e0e6445ccd69616",
+  "signature": {
+    "alg": "ed25519",
+    "signed_field": "batch_body_sha256",
+    "signature_hex": "d2a64f2795036867cb96474f08e7b602f2ea078c98e17538de1ff4744820e08ce1ce345898708d00c4f0f77ca299d646ac5e8975a6f0ce6b571b193205d8eb05",
+    "pubkey_sha256_fingerprint": "5b7fc9b398b162e4900f43bddf55cda93c8c7d0b1749cc86e0cbb5754582d6e6"
+  }
+}

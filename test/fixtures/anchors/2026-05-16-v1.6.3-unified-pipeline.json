@@ -1,0 +1,183 @@
+{
+  "schema": "causallayer.audit-batch.v1",
+  "title": "CausalLayer v1.6.3 \u2014 TIER 1 ENGINE FIXES DAY (T1.1 hand-off shim + T1.2 boundary tiering + T1.3 grade re-binning + T1.4 damages sector cap)",
+  "generated_at": "2026-05-15T22:13:45.164386+00:00",
+  "engine_package_version": "3.1.0",
+  "legal_scorer_doctrinal_version": "1.6.2",
+  "corpus_version": "0.9.1",
+  "corpus_path": "/home/ubuntu/calb2/v09/calb2_v091.json",
+  "leaf_count": 5,
+  "leaves": [
+    {
+      "leaf_index": 1,
+      "leaf_type": "unified_run_summary",
+      "title": "v1.6.3 unified pipeline \u2014 run summary (53 engines \u00d7 280 cases, T1 fixes applied)",
+      "artefact_path": "/home/ubuntu/calb2/v09/v163_unified/run_summary.json",
+      "sha256": "cffba6c4fc32fc66f34da63d9f603f075dab6102ffa8e38fb8b6ecd491a0418e",
+      "headline_metrics": {
+        "engine_version_tag": "v1.6.3 (T1.1+T1.2+T1.3+T1.4) + v3.1.0 (engine package)",
+        "cases_total": 280,
+        "cases_ok": 280,
+        "cases_failed": 0,
+        "total_runtime_ms": 21213,
+        "mean_runtime_ms_per_case": 76,
+        "legal_top1": {
+          "hits": 254,
+          "denom": 276,
+          "pct": 92
+        },
+        "legal_l1_mean": 20.92,
+        "engines_total_slots": 54,
+        "engines_filling_100pct": 45,
+        "engines_filling_partial": 4,
+        "engines_dead_zero_pct": 5
+      }
+    },
+    {
+      "leaf_index": 2,
+      "leaf_type": "scenario_map",
+      "title": "Per-case predictions, ground truth, doctrine, Top-1 / L1",
+      "artefact_path": "/home/ubuntu/calb2/v09/v163_unified/scenario_map.json",
+      "sha256": "3dc1ac6f4cf9bf921766b5677bca893b3eb31af5e62963e00248221affda60e8",
+      "case_count": 280
+    },
+    {
+      "leaf_index": 3,
+      "leaf_type": "coverage_matrix",
+      "title": "Per-case \u00d7 per-engine fill matrix (53 slots \u00d7 280 cases)",
+      "artefact_path": "/home/ubuntu/calb2/v09/v163_unified/coverage_matrix.json",
+      "sha256": "a9cbf33d6e64cf7750dd70feb19b5c91aaa5e4557726ecc1cce198b6df4156a8",
+      "engine_slots": [
+        "report",
+        "boundaryGaps",
+        "evidenceChainCompleteness",
+        "precedentAnalysis",
+        "historicalCaseAnalysis",
+        "severityBenchmark",
+        "contributoryNegligence",
+        "foreseeability",
+        "damagesQuantification",
+        "threeLayerLiability",
+        "recoveryPlan",
+        "litigationRisk",
+        "jurisdictionComparison",
+        "deviationTaxonomy",
+        "twoPassResult",
+        "confidenceIntervals",
+        "edgeEnrichment",
+        "jurisdictionDivergence",
+        "llmForeseeabilityRefinement",
+        "noveltyAnalysis",
+        "vicariousLiability",
+        "insuranceUnderwriting",
+        "supplyChain",
+        "financialRanges",
+        "courtAttribution",
+        "counterfactualSimulation",
+        "causalAnalysis",
+        "auditChain",
+        "reproducibilityCertificate",
+        "liabilityModeAnalysis",
+        "precedentPrediction",
+        "regulatoryFiling",
+        "scmIntegration",
+        "multiCausalAnalysis",
+        "judicialCalibration",
+        "infraCalibration",
+        "cyberCalibration",
+        "unifiedButFor",
+        "actuarialPricing",
+        "financialBlastRadius",
+        "calibratedDamages",
+        "outcomeTypeInference",
+        "regressionDamagesEstimate",
+        "ensembleConfidence",
+        "evidenceSufficiency",
+        "hitlBoundary",
+        "deepSupplyChain",
+        "forwardLoss",
+        "jurisdictionArbitrage",
+        "article73Report",
+        "causalCertificate",
+        "regulatorActions",
+        "autoCalibration",
+        "networkEffect"
+      ]
+    },
+    {
+      "leaf_index": 4,
+      "leaf_type": "per_case_bundle_merkle_root",
+      "title": "Bitcoin-style Merkle root over 280 per-case bundle files",
+      "sha256": "5000d58d8fa606c5996686d252445c91b41a1a7332746535689f66563a2aaa64",
+      "sha256_scope": "sha256(canonical-json of {leaf_type, case_count, merkle_algorithm, root, directory})",
+      "merkle_root_of_bundles": "947a15b41b3f35d735f63d0ff9e9d596deb3c7992c853515d64e574e9963d89e",
+      "case_count": 280,
+      "directory": "/home/ubuntu/calb2/v09/v163_unified/per_case",
+      "sample_inclusion_witnesses": [
+        {
+          "case_id": "L1-001",
+          "sha256": "a7813cbbb460a8628dfbf014a45fe039ab72aa3e571357eb246e05bf1a02e06c"
+        },
+        {
+          "case_id": "L2-911",
+          "sha256": "a1dcefd838487aede2715d844e264fb7180cab408d55ba192ac4e0d4c27d927e"
+        },
+        {
+          "case_id": "L9-907",
+          "sha256": "91a1c451f1b6810084bbc1ec8c0ace0e33ba1854fecf3f241f9c6448dbeb2151"
+        }
+      ]
+    },
+    {
+      "leaf_index": 5,
+      "leaf_type": "engine_code_fingerprint",
+      "title": "engine source fingerprints (T1.1\u2013T1.4 fixes locked)",
+      "artefact_path": "/home/ubuntu/work/causallayer/server/engine/legalResponsibilityScorer.ts",
+      "sha256": "c831be971011262ba9ff0a6a8b8e657e3be6d783a2b7b16f9a6316a6616a2d02",
+      "scope": "Locks the four Tier 1 fixes: T1.1 graph_causal hand-off shim (orchestrator), T1.2 boundary_gaps tiering (boundaryGapDetector.ts), T1.3 underwriting grade re-binning (insuranceUnderwriting.ts), T1.4 damages sector cap (damagesQuantification.ts).",
+      "supporting_artefacts": {
+        "legal_scorer": {
+          "path": "/home/ubuntu/work/causallayer/server/engine/legalResponsibilityScorer.ts",
+          "sha256": "c831be971011262ba9ff0a6a8b8e657e3be6d783a2b7b16f9a6316a6616a2d02",
+          "locks": "v1.6.2 in-house+joint \u2192 deployer (L5-903)"
+        },
+        "boundary_gap_detector": {
+          "path": "/home/ubuntu/work/causallayer/server/engine/boundaryGapDetector.ts",
+          "sha256": "104433c95131941f127ea05b26db4af9cbbf05d6c1953339e5562b948c6c1bc0",
+          "locks": "T1.2 v2 empirical-anchored severity tiering"
+        },
+        "insurance_underwriting": {
+          "path": "/home/ubuntu/work/causallayer/server/engine/insuranceUnderwriting.ts",
+          "sha256": "3000a4b48bec9e506b4efb6aa134a370b815d0eac33cbe9ca95c8ac450fdde24",
+          "locks": "T1.3 risk-grade re-binning (3 \u2192 6 grades)"
+        },
+        "damages_quantification": {
+          "path": "/home/ubuntu/work/causallayer/server/engine/damagesQuantification.ts",
+          "sha256": "b6166bf52834e76b363a6017b248496bd6477794fd2f234bffe9c5d9687a72b4",
+          "locks": "T1.4 sector cap (median $307M \u2192 $25M)"
+        },
+        "orchestrator": {
+          "path": "/home/ubuntu/work/causallayer/scripts/calb2_v091_unified_run.ts",
+          "sha256": "d6274a003305d15fd9e545b0f3dc837f9be4c2cd231422ca3cddc46b9eb46368",
+          "locks": "T1.1 graph_causal hand-off shim provenance"
+        },
+        "scope_check_script": {
+          "path": "/tmp/scope_inhouse_joint_fix.py",
+          "sha256": "c4e8cd05c89c00f02bdd021ed569d59dcc1767517caf5d47f222b04f6a530741",
+          "locks": "v1.6.2 fix scope analysis"
+        }
+      }
+    }
+  ],
+  "merkle_algorithm": "sha256-bitcoin-duplicate-pair",
+  "batch_merkle_root": "93a648c860c1765fc595f1a8d4639fd4f3a129af7f9b37648c86d1a2dd5448b1",
+  "status": "pre-genesis-test",
+  "notes": "First end-to-end run of the full 53-engine analyzeIncident() pipeline on all 280 cases of CALB-2 v0.9.1, with the legal-doctrine scorer (scoreLegalResponsibility) wired as the authoritative attribution path. Run completed in 18 seconds on a single core (mean 64 ms/case). Top-1 attribution matches CALB-2 ground-truth liability_allocation on 92.0% of valid cases (254/276); mean L1 = 20.92. 45 of 53 engine slots fire on 100% of cases; 3 fire partially (regulator-/domain-gated); 5 fire 0% (jurisdictionDivergence, llmForeseeabilityRefinement, unifiedButFor, regressionDamagesEstimate, article73Report \u2014 these are domain- or budget-gated and require either richer corpus signals or an LLM-call budget that this batch run did not enable). Reported transparently rather than hidden.",
+  "batch_body_sha256": "9bc6108462735b410bddcbe181589bed8bf2095dc475eded304523483dc6d8cb",
+  "signature": {
+    "alg": "ed25519",
+    "signed_field": "batch_body_sha256",
+    "signature_hex": "51fa2bf4c48af3a00ffc96cc28f25049c2df21e64720bac03fd8ddaaef7fec93e23abf1fa63dea285fe1647f6c8fcc05f352c2b081fb118c7144d37d2f848d04",
+    "pubkey_sha256_fingerprint": "5b7fc9b398b162e4900f43bddf55cda93c8c7d0b1749cc86e0cbb5754582d6e6"
+  }
+}

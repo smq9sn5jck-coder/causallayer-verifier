@@ -1,0 +1,104 @@
+{
+  "schema": "causallayer.audit-batch.v1",
+  "title": "CausalLayer v1.6 day audit batch",
+  "generated_at": "2026-05-15T19:45:55.282592+00:00",
+  "engine_version": "1.6.0",
+  "corpus_versions": [
+    "0.9.0",
+    "0.9.1"
+  ],
+  "leaf_count": 5,
+  "leaves": [
+    {
+      "leaf_index": 1,
+      "leaf_type": "engine_cert",
+      "title": "v1.6 engine cert on CALB-2 v0.9.0",
+      "artefact_path": "/home/ubuntu/work/causallayer-anchor-log/anchors/2026-05-15-v1.6-calb2-v0.9.0.json",
+      "sha256": "526e5a528b516ebcd849d0eb4c39f65ff0e5b0c0a9bc2b937e77316a9ee005a2",
+      "merkle_root_of_anchor": null,
+      "leaf_count_in_anchor": null,
+      "ots_proof": "/home/ubuntu/work/causallayer-anchor-log/anchors/2026-05-15-v1.6-calb2-v0.9.0.json.ots"
+    },
+    {
+      "leaf_index": 2,
+      "leaf_type": "xval_matrix_cert",
+      "title": "Cross-validation matrix: CausalLayer vs GPT-4.1-mini vs Gemini-2.5-flash",
+      "artefact_path": "/home/ubuntu/calb2/v09/xval/anchor/2026-05-15-xval-v1.0-calb2-v0.9.0.json",
+      "sha256": "5d2dbe4deb8a178566b6d7b6e960f34aadc50f7199cf669a5931b4e2e6d7e90a",
+      "merkle_root_of_anchor": null,
+      "leaf_count_in_anchor": null,
+      "ots_proof": "/home/ubuntu/calb2/v09/xval/anchor/2026-05-15-xval-v1.0-calb2-v0.9.0.json.ots",
+      "supporting_artefacts": {
+        "summary_sha256": "130320095396f8af6e0a94f149f69832f1ebcf97aad37ab8f09ee71c1f5347a4",
+        "report_sha256": "9c9a74c57df8359f3a182ee137e80255f9516172e3b40581d8c41f12179c673a",
+        "matrix_csv_sha256": "5c6500268a2dee055e076905ced3cd13a14cea34e652411b544a811466d4863f"
+      }
+    },
+    {
+      "leaf_index": 3,
+      "leaf_type": "curator_drift_cert",
+      "title": "Curator drift corrections v0.9.0 -> v0.9.1 (5 HIGH-severity retags with doctrinal justification)",
+      "sha256": "b29704e146cc6df6bc0f102865df1a54e68a97a44f5c6dc9cb927cd551c4d0d9",
+      "sha256_scope": "sha256(canonical-json of {audit_log_sha256, drift_csv_before_sha256, drift_csv_after_sha256, cases_corrected, leaf_type})",
+      "rules_applied": [
+        "R1_joint_sanction_must_show_in_2plus_slots",
+        "R2_individual_sanction_must_include_human_operator",
+        "R6a_explicit_none_provider_cannot_have_ai_provider_liability"
+      ],
+      "cases_corrected": [
+        "L5-903",
+        "L7-201",
+        "L8-902",
+        "L3-904",
+        "L11-202"
+      ],
+      "audit_log_sha256": "a54f980bd3f58557e08f72b9cac38b543434ef3bfd88535a44294f01d231c799",
+      "audit_log_path": "/home/ubuntu/work/causallayer-calb2/analysis/v1.6/v091_corrections.md",
+      "drift_csv_before_sha256": "70c0f2f1c30e3d2b4040f2cc5135116287774c30b9be1929d886a29f1db6e6e8",
+      "drift_csv_after_sha256": "735d423c795b0882b3f047a8eb92fe2e3fb3672e01e3f06ba1fe80279f0c9fc2",
+      "high_violations_before": 5,
+      "high_violations_after": 0
+    },
+    {
+      "leaf_index": 4,
+      "leaf_type": "cidl_layer1_cert",
+      "title": "CIDL Layer 1: typed telemetry contract + clean-run validation against v0.9.1",
+      "sha256": "26851337e8a358de7594c03b361213aa6ccb6a4623c7be7d7325f726d769d93f",
+      "sha256_scope": "sha256(canonical-json of {schema_sha256, validator_clean_run_csv_sha256, errors, warnings, leaf_type})",
+      "schema_path": "/home/ubuntu/work/causallayer-calb2/schema/cidl-layer1.schema.json",
+      "schema_sha256": "368925badbb166e31e70c48ca2fc304f52bbcb3dc619cbb5a527d791a446e3c1",
+      "validator_clean_run_csv_sha256": "aea0ac2b07ffe12843cb11a70bd1192c830999c47a54eaad8c5b5c5ed1c74d53",
+      "validator_clean_run_path": "/home/ubuntu/work/causallayer-calb2/analysis/v1.6.1/cidl_layer1_violations.csv",
+      "errors": 0,
+      "warnings": 0,
+      "scope": "8 closed-enum routing-critical telemetry fields (sanctioned_entity_role, primary_business_model, primary_source_type, regulator_named_provider, model_provider_class, deployer_org_class, ground_truth_confidence, failure_category)"
+    },
+    {
+      "leaf_index": 5,
+      "leaf_type": "engine_rerun_cert",
+      "title": "v1.6 engine re-run on CALB-2 v0.9.1 (engine unchanged, corpus self-consistent)",
+      "artefact_path": "/home/ubuntu/work/causallayer-anchor-log/anchors/2026-05-15-v1.6-calb2-v0.9.1.json",
+      "sha256": "889ea09517eec56e1e7d5bf9c4bd5d804b8d86602f02e81b9ac812de54a1d39e",
+      "merkle_root_of_anchor": null,
+      "leaf_count_in_anchor": null,
+      "ots_proof": "/home/ubuntu/work/causallayer-anchor-log/anchors/2026-05-15-v1.6-calb2-v0.9.1.json.ots",
+      "headline_metrics": {
+        "legal_top1": "257/280 = 91.8%",
+        "legal_top1_high_confidence": "180/193 = 93.3%",
+        "mean_l1_legal": 21.51,
+        "delta_vs_v090": "Top-1 unchanged; mean L1 21.59 -> 21.51 (-0.08)"
+      }
+    }
+  ],
+  "merkle_algorithm": "sha256-bitcoin-duplicate-pair",
+  "batch_merkle_root": "6abf8cee071d62359f241213b569846421804bc0c18a890569fd4186d55a2a3c",
+  "status": "pre-genesis-test",
+  "notes": "This batch concatenates the four certificates of record produced during the v1.6 push (engine cert v0.9.0, cross-validation matrix, curator drift correction, CIDL Layer 1) plus the v1.6 re-run on the corrected v0.9.1 corpus.  Each leaf SHA-256 hashes its underlying anchor JSON; the batch root is signed with ed25519 and OTS-stamped, yielding a single Bitcoin-attestable proof of the day's work.",
+  "batch_body_sha256": "72bec9814413b2e861b2a7d70c95bac3c8692a8288631dd1b9176e0e4ce8df7d",
+  "signature": {
+    "alg": "ed25519",
+    "signed_field": "batch_body_sha256",
+    "signature_hex": "8aebe59e4d6a713fe8be5a535ce94a4ae552852e5825631003a8f0adbda7022b7948c213d2c4ccd15480342c774a9c0e3633f1bf427018dfcc526060fe0e620e",
+    "pubkey_sha256_fingerprint": "5b7fc9b398b162e4900f43bddf55cda93c8c7d0b1749cc86e0cbb5754582d6e6"
+  }
+}

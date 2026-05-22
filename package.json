@@ -1,6 +1,6 @@
 {
   "name": "causallayer-verifier",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Independent, zero-dependency verifier for CausalLayer / Faultkey signed accuracy ledger entries and Merkle anchor records. Audit AI-liability claims without trusting the vendor.",
   "keywords": [
     "ai-liability",
@@ -38,7 +38,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node test/test.js && node test/adversarial.js",
+    "test": "node test/test.js && node test/adversarial.js && node test/production-anchors.js",
     "prepublishOnly": "npm test"
   },
   "publishConfig": {
