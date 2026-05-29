@@ -26,7 +26,8 @@
   "type": "commonjs",
   "main": "lib/index.js",
   "bin": {
-    "causallayer-verify": "bin/causallayer-verify.js"
+    "causallayer-verify": "bin/causallayer-verify.js",
+    "causallayer-verifier": "bin/causallayer-verifier.js"
   },
   "files": [
     "lib/",
