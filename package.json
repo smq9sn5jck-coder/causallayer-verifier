@@ -1,7 +1,7 @@
 {
   "name": "causallayer-verifier",
   "version": "0.1.0",
-  "description": "Client-side verification CLI for CausalCertificateV1 \u2014 Ed25519 signature, Merkle tree, hash consistency, issuer trust, and anchor status checks.",
+  "description": "Client-side verification CLI for CausalCertificateV1 — Ed25519 signature, Merkle tree, hash consistency, issuer trust, and anchor status checks.",
   "keywords": [
     "causallayer",
     "faultkey",
@@ -41,6 +41,7 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "typescript": "^5.4.0"
   }
 }
