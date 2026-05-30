@@ -1,0 +1,45 @@
+{
+  "name": "causallayer-verifier",
+  "version": "0.1.0",
+  "description": "Client-side verification CLI for CausalCertificateV1 — Ed25519 signature, Merkle tree, hash consistency, issuer trust, and anchor status checks.",
+  "keywords": [
+    "causallayer",
+    "faultkey",
+    "verification",
+    "ed25519",
+    "merkle",
+    "certificate",
+    "ai-liability",
+    "deterministic"
+  ],
+  "license": "MIT",
+  "author": "FaultKey <engineering@faultkey.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smq9sn5jck-coder/causallayer-verifier"
+  },
+  "homepage": "https://faultkey.com/verify",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "causallayer-verifier": "./bin/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
