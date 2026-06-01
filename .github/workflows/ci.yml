@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build & provenance round-trip
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install deps
+        # Note: `prepare` runs `tsc`, so this also exercises the build.
+        run: npm ci
+
+      - name: Typecheck / build
+        run: npm run build
+
+      - name: Provenance round-trip tests
+        # Signs a CausalCertificateV1 as a producer and asserts the verifier
+        # accepts it and rejects every tamper. This is the test that caught the
+        # Ed25519 verification bug; it must stay green so engine/verifier/worker
+        # never silently drift on the signing contract.
+        run: npm test
