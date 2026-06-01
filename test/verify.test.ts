@@ -297,4 +297,75 @@ describe("verifyCertificate — registry resolution", () => {
     expect(statusOf(res.checks, 2)).toBe("fail");
     expect(res.checks).toHaveLength(7);
   });
+
+  it("treats a non-200 registry response as a network failure (pinned fallback)", async () => {
+    // ok=false → fetchIssuerRegistry throws internally and falls back to pinned.
+    mockRegistry(buildRegistry(), /* ok */ false);
+    const cert = buildValidCert();
+    const res = await verifyCertificate(cert);
+    expect(statusOf(res.checks, 2)).toBe("fail"); // generated key not in pinned set
+    expect(res.checks).toHaveLength(7);
+  });
+});
+
+// ─── canonicalize: primitive serialization ──────────────────────────────────
+describe("canonicalize — primitives", () => {
+  it("serializes booleans and numbers as JSON literals", () => {
+    expect(canonicalize(true)).toBe("true");
+    expect(canonicalize(false)).toBe("false");
+    expect(canonicalize(42)).toBe("42");
+    expect(canonicalize(-3.5)).toBe("-3.5");
+  });
+
+  it("serializes top-level strings, null and undefined", () => {
+    expect(canonicalize("hi")).toBe('"hi"');
+    expect(canonicalize(null)).toBe("null");
+    expect(canonicalize(undefined)).toBe("null");
+  });
+
+  it("renders empty objects and arrays", () => {
+    expect(canonicalize({})).toBe("{}");
+    expect(canonicalize([])).toBe("[]");
+  });
+});
+
+// ─── Anchor check branches ───────────────────────────────────────────────────
+describe("verifyCertificate — anchor states", () => {
+  it("WARNs when an anchor object is present but carries no proof data", async () => {
+    const cert = buildValidCert();
+    // Anchor is excluded from the signed payload, so the signature still holds.
+    cert.anchor = { anchored_at: "2026-05-02T00:00:00Z" }; // no ots_proof / rekor_entry
+    const res = await verifyCertificate(cert);
+    expect(statusOf(res.checks, 7)).toBe("warn");
+    expect(res.verdict).toBe("VERIFIED_WITH_NOTES");
+  });
+
+  it("PASSes the anchor check when only a Rekor entry is present", async () => {
+    const cert = buildValidCert();
+    cert.anchor = { rekor_entry: "uuid-123", anchored_at: "2026-05-02T00:00:00Z" };
+    const res = await verifyCertificate(cert);
+    expect(statusOf(res.checks, 7)).toBe("pass");
+    expect(res.verdict).toBe("VERIFIED");
+  });
+});
+
+// ─── Demo mode: no registered key to verify against ──────────────────────────
+describe("verifyCertificate — demo-mode signature path", () => {
+  it("WARNs (rather than fails) on a 64-char demo signature with no matching key", async () => {
+    mockRegistry(buildRegistry({ key_id: "ed25519:some-other-key" }));
+    const cert = buildValidCert();
+    cert.signature = "a".repeat(64); // demo-style hash signature, length 64
+    const res = await verifyCertificate(cert);
+    expect(statusOf(res.checks, 2)).toBe("fail"); // key not registered
+    expect(statusOf(res.checks, 3)).toBe("warn"); // demo-mode acceptance
+  });
+
+  it("FAILs when there is no matching key and the signature format is unrecognized", async () => {
+    mockRegistry(buildRegistry({ key_id: "ed25519:some-other-key" }));
+    const cert = buildValidCert();
+    cert.signature = "xyz"; // neither the expected demo hash nor 64 chars
+    const res = await verifyCertificate(cert);
+    expect(statusOf(res.checks, 3)).toBe("fail");
+    expect(res.verdict).toBe("FAILED");
+  });
 });
