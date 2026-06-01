@@ -135,6 +135,7 @@ const PINNED_REGISTRY: IssuerRegistry = {
 const REGISTRY_URL = "https://faultkey.com/.well-known/causallayer-issuers.json";
 
 async function fetchIssuerRegistry(): Promise<{ registry: IssuerRegistry; source: "remote" | "pinned" }> {
+  let result: { registry: IssuerRegistry; source: "remote" | "pinned" };
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
@@ -142,9 +143,31 @@ async function fetchIssuerRegistry(): Promise<{ registry: IssuerRegistry; source
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    return { registry: data as IssuerRegistry, source: "remote" };
+    result = { registry: data as IssuerRegistry, source: "remote" };
   } catch {
-    return { registry: PINNED_REGISTRY, source: "pinned" };
+    result = { registry: PINNED_REGISTRY, source: "pinned" };
+  }
+  return { ...result, registry: applyExtraIssuerKeys(result.registry) };
+}
+
+/**
+ * Merge operator-provided issuer keys (env var CAUSALLAYER_ISSUER_KEYS, a JSON
+ * array of IssuerKey) over the resolved registry. Lets keys be added or rotated
+ * without a redeploy, and gives tests a seam to register a freshly generated
+ * key. Extra keys override registry keys with the same key_id. Mirrors the
+ * ISSUER_PUBLIC_KEYS override in faultkey-cert-worker.
+ */
+function applyExtraIssuerKeys(registry: IssuerRegistry): IssuerRegistry {
+  const raw = (globalThis as any).process?.env?.CAUSALLAYER_ISSUER_KEYS;
+  if (!raw) return registry;
+  try {
+    const extra = JSON.parse(raw) as IssuerKey[];
+    if (!Array.isArray(extra) || extra.length === 0) return registry;
+    const byId = new Map(registry.keys.map((k) => [k.key_id, k]));
+    for (const k of extra) byId.set(k.key_id, k);
+    return { ...registry, keys: Array.from(byId.values()) };
+  } catch {
+    return registry; // malformed override — ignore, keep the resolved registry
   }
 }
 
