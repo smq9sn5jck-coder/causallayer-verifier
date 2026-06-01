@@ -181,10 +181,22 @@ export async function verifyCertificate(input: string | CausalCertificateV1): Pr
   const c1Start = performance.now();
   try {
     cert = typeof input === "string" ? JSON.parse(input) : input;
+    if (cert === null || typeof cert !== "object" || Array.isArray(cert)) {
+      throw new Error("Certificate must be a JSON object");
+    }
     const required = ["cert_id", "schema", "incident_id", "timestamp", "issuer", "signature", "merkle_root", "outputs", "causal_chain"];
     const missing = required.filter((f) => !(f in (cert as any)));
+    // Validate field types of untrusted input before any crypto/structural checks consume them.
+    const typeErrors: string[] = [];
+    if (cert!.issuer !== undefined && (typeof cert!.issuer !== "object" || cert!.issuer === null || Array.isArray(cert!.issuer))) typeErrors.push("issuer must be an object");
+    if (cert!.signature !== undefined && typeof cert!.signature !== "string") typeErrors.push("signature must be a string");
+    if (cert!.merkle_root !== undefined && typeof cert!.merkle_root !== "string") typeErrors.push("merkle_root must be a string");
+    if (cert!.causal_chain !== undefined && !Array.isArray(cert!.causal_chain)) typeErrors.push("causal_chain must be an array");
+    if (cert!.outputs !== undefined && (typeof cert!.outputs !== "object" || cert!.outputs === null || Array.isArray(cert!.outputs))) typeErrors.push("outputs must be an object");
     if (missing.length > 0) {
       checks.push({ id: 1, name: "Schema", description: "CausalCertificateV1 structure", status: "fail", detail: `Missing fields: ${missing.join(", ")}`, durationMs: performance.now() - c1Start });
+    } else if (typeErrors.length > 0) {
+      checks.push({ id: 1, name: "Schema", description: "CausalCertificateV1 structure", status: "fail", detail: `Invalid field types: ${typeErrors.join("; ")}`, durationMs: performance.now() - c1Start });
     } else if (cert!.schema !== "CausalCertificateV1") {
       checks.push({ id: 1, name: "Schema", description: "CausalCertificateV1 structure", status: "warn", detail: `Schema field is "${cert!.schema}" (expected "CausalCertificateV1")`, durationMs: performance.now() - c1Start });
     } else {
@@ -218,25 +230,36 @@ export async function verifyCertificate(input: string | CausalCertificateV1): Pr
     const sigHex = cert!.signature;
     
     if (matchedKey) {
-      const pubKeyDer = Buffer.from(matchedKey.public_key_base64, "base64");
-      const sigBuf = Buffer.from(sigHex, "hex");
-      // Ed25519 is a pure (non-prehashed) signature scheme: it has no digest
-      // algorithm, so the streaming createVerify("Ed25519") API throws
-      // "Invalid digest". The one-shot crypto.verify(null, ...) API is the
-      // correct path for Ed25519/Ed448.
-      const valid = cryptoVerify(null, Buffer.from(canonical), { key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
-      if (valid) {
-        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "pass", detail: `Signature verified against key ${keyId}. Canonical payload: ${canonical.length} bytes.`, durationMs: performance.now() - c3Start });
+      // Validate algorithm agreement and signature encoding BEFORE attempting verification.
+      // An Ed25519 signature is exactly 64 bytes = 128 hex chars; reject anything else
+      // rather than letting Buffer.from(...,"hex") silently truncate malformed input.
+      if (matchedKey.alg !== "ed25519" || cert!.issuer?.algorithm !== "ed25519") {
+        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Algorithm mismatch: registry key alg="${matchedKey.alg}", cert algorithm="${cert!.issuer?.algorithm}". Expected "ed25519".`, durationMs: performance.now() - c3Start });
+      } else if (typeof sigHex !== "string" || !/^[0-9a-fA-F]{128}$/.test(sigHex)) {
+        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Signature is not a valid 128-character (64-byte) hex string.`, durationMs: performance.now() - c3Start });
       } else {
-        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Signature INVALID for key ${keyId}. The certificate has been tampered with or was not signed by this key.`, durationMs: performance.now() - c3Start });
+        const pubKeyDer = Buffer.from(matchedKey.public_key_base64, "base64");
+        const sigBuf = Buffer.from(sigHex, "hex");
+        // Ed25519 is a pure (non-prehashed) signature scheme: it has no digest
+        // algorithm, so the streaming createVerify("Ed25519") API throws
+        // "Invalid digest". The one-shot crypto.verify(null, ...) API is the
+        // correct path for Ed25519/Ed448.
+        const valid = cryptoVerify(null, Buffer.from(canonical), { key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
+        if (valid) {
+          checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "pass", detail: `Signature verified against key ${keyId}. Canonical payload: ${canonical.length} bytes.`, durationMs: performance.now() - c3Start });
+        } else {
+          checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Signature INVALID for key ${keyId}. The certificate has been tampered with or was not signed by this key.`, durationMs: performance.now() - c3Start });
+        }
       }
     } else {
-      // Demo mode: verify hash-based signature
+      // No registered key matches the cert's key_id. A signature verifier must fail closed:
+      // never accept a signature based on its length/format alone. We only acknowledge the
+      // legacy demo hash-based signature when it EXACTLY matches the expected digest.
       const expectedSig = sha256Hex(cert!.incident_id + "PRIMARY_CONTRIBUTOR_AI_PROVIDER" + JSON.stringify(cert!.outputs));
-      if (sigHex === expectedSig || sigHex.length === 64) {
-        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "warn", detail: `Demo mode: hash-based signature detected (no registered key to verify against). Signature length: ${sigHex.length} chars.`, durationMs: performance.now() - c3Start });
+      if (sigHex === expectedSig) {
+        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "warn", detail: `Demo mode: hash-based signature matched (no registered key to verify against). Not a cryptographic signature — for demonstration only.`, durationMs: performance.now() - c3Start });
       } else {
-        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Cannot verify: no matching key and signature format unrecognized.`, durationMs: performance.now() - c3Start });
+        checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "fail", detail: `Cannot verify: no registered key matches key_id "${keyId}" and the signature does not match the expected demo digest.`, durationMs: performance.now() - c3Start });
       }
     }
   } catch (e: any) {

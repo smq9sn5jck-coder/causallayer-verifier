@@ -12,8 +12,13 @@
  */
 
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { resolve, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { verifyCertificate } from "../dist/index.js";
+
+const PKG_VERSION = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "package.json"), "utf8"),
+).version;
 
 const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
@@ -101,7 +106,7 @@ ${BOLD}WEB EQUIVALENT${RESET}
     process.exit(1);
   }
 
-  console.log(`\n${BOLD}causallayer-verifier v0.1.0${RESET}`);
+  console.log(`\n${BOLD}causallayer-verifier v${PKG_VERSION}${RESET}`);
   console.log(`${DIM}─────────────────────────────────────────${RESET}\n`);
 
   const result = await verifyCertificate(input);
