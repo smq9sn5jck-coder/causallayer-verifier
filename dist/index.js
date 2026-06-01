@@ -16,7 +16,7 @@
  * Trust model: Zero server trust. All checks run locally.
  * The only external fetch is the issuer's public key at a pinnable .well-known URL.
  */
-import { createHash, createVerify } from "node:crypto";
+import { createHash, verify as edVerify } from "node:crypto";
 // ─── Canonicalization (RFC 8785 JCS) ────────────────────────────────────────
 export function canonicalize(obj) {
     if (obj === null || obj === undefined)
@@ -75,6 +75,7 @@ const PINNED_REGISTRY = {
 };
 const REGISTRY_URL = "https://faultkey.com/.well-known/causallayer-issuers.json";
 async function fetchIssuerRegistry() {
+    let result;
     try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
@@ -83,10 +84,35 @@ async function fetchIssuerRegistry() {
         if (!res.ok)
             throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        return { registry: data, source: "remote" };
+        result = { registry: data, source: "remote" };
     }
     catch {
-        return { registry: PINNED_REGISTRY, source: "pinned" };
+        result = { registry: PINNED_REGISTRY, source: "pinned" };
+    }
+    return { ...result, registry: applyExtraIssuerKeys(result.registry) };
+}
+/**
+ * Merge any operator-provided issuer keys (env var CAUSALLAYER_ISSUER_KEYS, a
+ * JSON array of IssuerKey) over the resolved registry. Lets keys be added or
+ * rotated without a redeploy — and gives tests a seam to register a freshly
+ * generated key. Extra keys override registry keys with the same key_id.
+ * Mirrors the ISSUER_PUBLIC_KEYS override in faultkey-cert-worker.
+ */
+function applyExtraIssuerKeys(registry) {
+    const raw = globalThis.process?.env?.CAUSALLAYER_ISSUER_KEYS;
+    if (!raw)
+        return registry;
+    try {
+        const extra = JSON.parse(raw);
+        if (!Array.isArray(extra) || extra.length === 0)
+            return registry;
+        const byId = new Map(registry.keys.map((k) => [k.key_id, k]));
+        for (const k of extra)
+            byId.set(k.key_id, k);
+        return { ...registry, keys: Array.from(byId.values()) };
+    }
+    catch {
+        return registry; // malformed override — ignore, fall back to registry
     }
 }
 // ─── Verification Pipeline ──────────────────────────────────────────────────
@@ -138,10 +164,12 @@ export async function verifyCertificate(input) {
         const sigHex = cert.signature;
         if (matchedKey) {
             const pubKeyDer = Buffer.from(matchedKey.public_key_base64, "base64");
-            const verify = createVerify("Ed25519");
-            verify.update(canonical);
             const sigBuf = Buffer.from(sigHex, "hex");
-            const valid = verify.verify({ key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
+            // Ed25519 must use the one-shot verify API. The legacy streaming
+            // createVerify("Ed25519").update().verify() throws "Invalid digest" for
+            // EdDSA in Node, which previously made this check reject EVERY validly
+            // signed certificate (caught by the provenance round-trip test).
+            const valid = edVerify(null, Buffer.from(canonical, "utf8"), { key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
             if (valid) {
                 checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "pass", detail: `Signature verified against key ${keyId}. Canonical payload: ${canonical.length} bytes.`, durationMs: performance.now() - c3Start });
             }
