@@ -297,4 +297,43 @@ describe("verifyCertificate — registry resolution", () => {
     expect(statusOf(res.checks, 2)).toBe("fail");
     expect(res.checks).toHaveLength(7);
   });
+
+  it("trusts a key supplied via the CAUSALLAYER_ISSUER_KEYS env override", async () => {
+    // Remote and pinned registries do NOT know our generated key. Supplying it
+    // through the env override (the runtime key-rotation seam) must let issuer
+    // trust AND signature verification pass — without a redeploy.
+    mockRegistryNetworkFailure();
+    process.env.CAUSALLAYER_ISSUER_KEYS = JSON.stringify([
+      {
+        key_id: KEY_ID,
+        alg: "ed25519",
+        public_key_base64: pubKeyBase64,
+        status: "active",
+        valid_from: "2020-01-01T00:00:00Z",
+      },
+    ]);
+    try {
+      const cert = buildValidCert();
+      const res = await verifyCertificate(cert);
+      expect(statusOf(res.checks, 2)).toBe("pass"); // issuer trust
+      expect(statusOf(res.checks, 3)).toBe("pass"); // signature
+    } finally {
+      delete process.env.CAUSALLAYER_ISSUER_KEYS;
+    }
+  });
+
+  it("ignores a malformed CAUSALLAYER_ISSUER_KEYS value", async () => {
+    mockRegistryNetworkFailure();
+    process.env.CAUSALLAYER_ISSUER_KEYS = "{ not valid json";
+    try {
+      const cert = buildValidCert();
+      const res = await verifyCertificate(cert);
+      // Malformed override is ignored → key still unknown → issuer trust fails,
+      // and the pipeline does not throw.
+      expect(statusOf(res.checks, 2)).toBe("fail");
+      expect(res.checks).toHaveLength(7);
+    } finally {
+      delete process.env.CAUSALLAYER_ISSUER_KEYS;
+    }
+  });
 });
