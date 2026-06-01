@@ -17,7 +17,7 @@
  * The only external fetch is the issuer's public key at a pinnable .well-known URL.
  */
 
-import { createHash, createVerify } from "node:crypto";
+import { createHash, verify as cryptoVerify } from "node:crypto";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 export type CheckStatus = "pass" | "fail" | "warn" | "pending" | "skipped";
@@ -196,10 +196,12 @@ export async function verifyCertificate(input: string | CausalCertificateV1): Pr
     
     if (matchedKey) {
       const pubKeyDer = Buffer.from(matchedKey.public_key_base64, "base64");
-      const verify = createVerify("Ed25519");
-      verify.update(canonical);
       const sigBuf = Buffer.from(sigHex, "hex");
-      const valid = verify.verify({ key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
+      // Ed25519 is a pure (non-prehashed) signature scheme: it has no digest
+      // algorithm, so the streaming createVerify("Ed25519") API throws
+      // "Invalid digest". The one-shot crypto.verify(null, ...) API is the
+      // correct path for Ed25519/Ed448.
+      const valid = cryptoVerify(null, Buffer.from(canonical), { key: pubKeyDer, format: "der", type: "spki" }, sigBuf);
       if (valid) {
         checks.push({ id: 3, name: "Signature", description: "Ed25519 signature over canonical payload", status: "pass", detail: `Signature verified against key ${keyId}. Canonical payload: ${canonical.length} bytes.`, durationMs: performance.now() - c3Start });
       } else {
